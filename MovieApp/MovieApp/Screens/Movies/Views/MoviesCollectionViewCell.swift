@@ -10,7 +10,7 @@ import UIKit
 class MoviesCollectionViewCell: UICollectionViewCell {
     
     var movie : Search?
-    var onFavouriteButtonTapped: (() -> Void)?
+    var onFavouriteButtonTapped: ((String) -> Void)?
     
     // MARK: - IBOutlets
     @IBOutlet weak var movieImageView: UIImageView!
@@ -28,34 +28,41 @@ class MoviesCollectionViewCell: UICollectionViewCell {
         if tag == 1{
             // save movie to UserDefaults for moviesCollectionView
             guard let movie else {return}
-            saveMovie(movie)
-            onFavouriteButtonTapped?()
+            let message = saveMovie(movie)
+            onFavouriteButtonTapped?(message)
+            
         }
         else if tag == 2{
             //remove from UserDefaults for favouritesCollectionView
             guard let movie else {return}
-            removeMovie(movie)
-            onFavouriteButtonTapped?()
+            let message = removeMovie(movie)
+            onFavouriteButtonTapped?(message)
         }
     }
 }
 
 // MARK: - UserDefault methods
 extension MoviesCollectionViewCell{
-    func saveMovie(_ movie: Search){
+    func saveMovie(_ movie: Search) -> String{
         var savedMovies = getSavedMoviesFromUserDefaults()
         if !(savedMovies.contains(where: {$0.imdbID == movie.imdbID})){
             savedMovies.append(movie)
             saveMoviesToUserDefaults(savedMovies)
+            return "Movie Added to favourites"
+        }
+        else{
+            return "Movie already in favourites"
         }
     }
     
-    func removeMovie(_ movie : Search){
+    func removeMovie(_ movie : Search) -> String{
         var savedMovies = getSavedMoviesFromUserDefaults()
         if let index = savedMovies.firstIndex(where: {$0.imdbID == movie.imdbID}){
             savedMovies.remove(at : index)
             saveMoviesToUserDefaults(savedMovies)
+            return "Movie deleted from favourites"
         }
+        return ""
     }
     
     func saveMoviesToUserDefaults(_ movies: [Search]) {

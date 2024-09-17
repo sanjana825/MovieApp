@@ -41,14 +41,28 @@ extension FavouritesViewController: UICollectionViewDelegate, UICollectionViewDa
         }
         cell.movie = movieList?[indexPath.row]
         cell.tag = favouritesCollectionView.tag
-        cell.onFavouriteButtonTapped = { [weak self] in
+        cell.onFavouriteButtonTapped = { [weak self] message in
+            if message != ""{
+                let alert = UIAlertController(title: "Favourites", message: message, preferredStyle: .alert)
+                let ok = UIAlertAction(title: "OK", style: .default)
+                alert.addAction(ok)
+                self?.present(alert, animated: true)
+            }
             self?.handleFavouriteButtonTapped(at: indexPath)
+            
         }
         return cell
     }
     private func handleFavouriteButtonTapped(at indexPath: IndexPath) {
         loadMoviesFromUserDefaults()
         favouritesCollectionView.reloadData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let destinationVC = storyboard?.instantiateViewController(withIdentifier: "MovieDetailsViewController") as! MovieDetailsViewController
+        destinationVC.imdbID = movieList?[indexPath.row].imdbID
+        destinationVC.movieTitle = movieList?[indexPath.row].title
+        navigationController?.pushViewController(destinationVC, animated: true)
     }
     
 }
@@ -85,11 +99,14 @@ extension FavouritesViewController{
     
     func loadMoviesFromUserDefaults(){
         if let savedMovies = loadMovies() {
-            noFavouritesView.isHidden = true
-            self.movieList = savedMovies
-        } else {
-            // Handle the case where no movies are saved
-            noFavouritesView.isHidden = false
+            if savedMovies.count == 0{
+                // Handle the case where no movies are saved
+                noFavouritesView.isHidden = false
+            }
+            else{
+                noFavouritesView.isHidden = true
+                self.movieList = savedMovies
+            }
         }
     }
 }

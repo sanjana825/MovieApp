@@ -49,11 +49,11 @@ extension MoviesViewController : UICollectionViewDelegate, UICollectionViewDataS
         }
         cell.movie = movieList?[indexPath.row]
         cell.tag = moviesCollectionView.tag
-        cell.onFavouriteButtonTapped = {
-            let alert = UIAlertController(title: "Alert", message: "Movie added to favourites!", preferredStyle: .alert)
+        cell.onFavouriteButtonTapped = { [weak self] message in
+            let alert = UIAlertController(title: "Favourites", message: message, preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .default)
             alert.addAction(ok)
-            self.present(alert, animated: true)
+            self?.present(alert, animated: true)
         }
         return cell
     }
@@ -80,7 +80,7 @@ extension MoviesViewController : UISearchBarDelegate{
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let text = searchBar.text{
+        if let text = searchBar.text, !text.isEmpty{
             fetchMoviesAPI(text)
             moviesCollectionView.reloadData()
         }
