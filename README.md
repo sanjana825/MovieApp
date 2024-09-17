@@ -18,8 +18,7 @@ To run the app, you need an API key from OMDB. You can obtain one by signing up 
 1.Clone the Repository
 
 2.In the root of the project, create a file named Secrets.plist. Add the following key-value pair to it:
-key : OMDB_API_Key , value: Your_OMDB_API_Key 
-Replace Your_OMDB_API_Key with your actual API key.
+key : OMDB_API_Key , value: Your_OMDB_API_Key. Replace Your_OMDB_API_Key with your actual API key.
 
 3.Run the App:
 Open the project in Xcode and build the app. You should be able to run it on the simulator.
