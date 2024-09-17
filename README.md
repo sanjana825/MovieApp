@@ -22,5 +22,5 @@ key : OMDB_API_Key , value: Your_OMDB_API_Key
 Replace Your_OMDB_API_Key with your actual API key.
 
 3.Run the App:
-Open the project in Xcode and build the app. You should be able to run it on a simulator or device.
+Open the project in Xcode and build the app. You should be able to run it on the simulator.
 
